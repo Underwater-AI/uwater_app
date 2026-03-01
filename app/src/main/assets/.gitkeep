@@ -1,0 +1,2 @@
+This directory holds the converted PyTorch Mobile model files (.pt).
+They are excluded from version control — see models.md for setup instructions.

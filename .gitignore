@@ -1,0 +1,51 @@
+# =============================================================================
+# UnderwaterAI — .gitignore
+# =============================================================================
+
+# ── Android build outputs ──────────────────────────────────────────────────
+.gradle/
+build/
+app/build/
+*.apk
+*.aab
+*.aar
+
+# ── Model files — NEVER commit (see models.md for setup instructions) ─────
+app/src/main/assets/*.pt
+app/src/main/assets/*.ptl
+app/src/main/assets/*.bin
+models/
+models.zip
+
+# ── Signing keystores — keep off VCS ──────────────────────────────────────
+*.jks
+*.keystore
+keystore.properties
+release.keystore
+
+# ── Local developer config ─────────────────────────────────────────────────
+local.properties
+android-app/local.properties
+
+# ── Python virtual environments & bytecache ───────────────────────────────
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+*.egg
+
+# ── IDE / editor artefacts ────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ── Test output images ────────────────────────────────────────────────────
+output_images/
+test_images/
+underwater_ai_log.txt

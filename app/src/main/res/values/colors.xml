@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="deep_ocean">#FF001524</color>
+    <color name="ocean_blue">#FF003049</color>
+    <color name="teal">#FF006D77</color>
+    <color name="accent_cyan">#FF00B4D8</color>
+    <color name="pale_blue">#FFEDF6F9</color>
+    <color name="background_dark">#FF000B14</color>
+</resources>
