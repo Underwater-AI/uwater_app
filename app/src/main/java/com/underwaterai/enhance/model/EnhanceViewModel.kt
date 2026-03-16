@@ -9,6 +9,8 @@ import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.underwaterai.enhance.utils.AppLogger
+import com.underwaterai.enhance.utils.DeviceTier
+import com.underwaterai.enhance.utils.HardwareProfiler
 import com.underwaterai.enhance.utils.PerformanceMetrics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +21,7 @@ import kotlinx.coroutines.withContext
 
 data class EnhanceUiState(
     val selectedModel: ModelType = ModelType.MODEL_1,
+    val selectedScale: Int = 4,
     val originalBitmap: Bitmap? = null,
     val enhancedBitmap: Bitmap? = null,
     val isProcessing: Boolean = false,
@@ -45,6 +48,12 @@ class EnhanceViewModel(application: Application) : AndroidViewModel(application)
     fun selectModel(model: ModelType) {
         _uiState.value = _uiState.value.copy(selectedModel = model)
         AppLogger.i(TAG, "Model selected: ${model.displayName} (${model.description})")
+    }
+
+    fun selectScale(scale: Int) {
+        val clamped = scale.coerceIn(1, 4)
+        _uiState.value = _uiState.value.copy(selectedScale = clamped)
+        AppLogger.i(TAG, "Scale selected: ${clamped}x")
     }
 
     fun loadImage(uri: Uri) {
@@ -202,6 +211,13 @@ class EnhanceViewModel(application: Application) : AndroidViewModel(application)
     fun enhanceImage() {
         val original = _uiState.value.originalBitmap ?: return
         val model = _uiState.value.selectedModel
+        val targetScale = _uiState.value.selectedScale
+
+        // Warn users on low-end devices about heavy models before starting
+        val tier = HardwareProfiler.classifyDevice(getApplication())
+        if (tier == DeviceTier.LOW && model.description.contains("ESRGAN", ignoreCase = true)) {
+            AppLogger.w(TAG, "Low-end device running ESRGAN model ${model.displayName} — may be slow")
+        }
 
         _uiState.value = _uiState.value.copy(
             isProcessing = true,
@@ -210,11 +226,11 @@ class EnhanceViewModel(application: Application) : AndroidViewModel(application)
             metrics = null
         )
 
-        AppLogger.i(TAG, "Enhancement requested: ${model.displayName}")
+        AppLogger.i(TAG, "Enhancement requested: ${model.displayName} at ${targetScale}x (tier=$tier)")
 
         viewModelScope.launch {
             try {
-                val (enhanced, metrics) = enhancer.enhance(original, model)
+                val (enhanced, metrics) = enhancer.enhance(original, model, targetScale)
                 AppLogger.i(TAG, "Enhancement succeeded: ${metrics.totalTimeMs}ms total")
                 _uiState.value = _uiState.value.copy(
                     enhancedBitmap = enhanced,
@@ -223,8 +239,8 @@ class EnhanceViewModel(application: Application) : AndroidViewModel(application)
                     showResult = true
                 )
             } catch (e: Exception) {
-                val msg = "Enhancement failed: ${e.message}"
-                AppLogger.e(TAG, msg, e)
+                val msg = e.message ?: "Unknown error during enhancement"
+                AppLogger.e(TAG, "Enhancement failed: $msg", e)
                 _uiState.value = _uiState.value.copy(
                     isProcessing = false,
                     errorMessage = msg

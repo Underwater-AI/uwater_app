@@ -11,8 +11,8 @@ android {
         applicationId = "com.underwaterai.enhance"
         minSdk = 26
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 5
+        versionName = "1.0.4"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -122,4 +122,14 @@ dependencies {
     // Debug
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Unit Testing
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("io.mockk:mockk:1.13.9")
+    testImplementation("org.robolectric:robolectric:4.11.1")
+
+    // Android instrumentation tests
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test:runner:1.5.2")
 }

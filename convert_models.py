@@ -1,7 +1,11 @@
 """Convert OpenModelDB models to optimized TorchScript (.pt) for Android.
 
-Only Compact (SRVGGNetCompact) and SPAN architectures are used — they are
-pure-CNN, fully compatible with torch.jit.trace, and fast on mobile ARM64.
+Supported architectures:
+- SRVGGNetCompact (Real-ESRGAN Compact) — lightweight, fastest on mobile
+- SPAN — pure-CNN, fast on mobile ARM64
+- RRDBNet (ESRGAN/BSRGAN) — heavier but highest quality, viable on mobile
+
+All are pure-CNN and fully compatible with torch.jit.trace.
 """
 
 import torch
@@ -9,7 +13,7 @@ import spandrel
 from torch.utils.mobile_optimizer import optimize_for_mobile
 from pathlib import Path
 
-BASE_DIR = Path("/home/shuvam/codes/underwater-ai/underwater-ai.github.io")
+BASE_DIR = Path("/home/shuvam/codes/underwater-ai/uwater_app")
 MODELS_DIR = BASE_DIR / "models"
 
 # Trace input sized to match actual mobile usage (not 64x64).
@@ -41,6 +45,27 @@ CONVERSIONS = [
         "src": "4x-Nomos8k-span-otf-medium.pth",
         "dst": "model_nomos8k_span_4x.pt",
         "name": "Nomos8k SPAN OTF Medium 4x",
+    },
+    # === New ESRGAN/RRDBNet models (high quality, heavier) ===
+    {
+        "src": "RealESRGAN_x4plus.pth",
+        "dst": "model_realesrgan_x4plus_4x.pt",
+        "name": "RealESRGAN x4plus 4x",
+    },
+    {
+        "src": "4x-UltraSharp.pth",
+        "dst": "model_ultrasharp_4x.pt",
+        "name": "UltraSharp 4x",
+    },
+    {
+        "src": "4x_foolhardy_Remacri.pth",
+        "dst": "model_remacri_4x.pt",
+        "name": "Remacri 4x",
+    },
+    {
+        "src": "BSRGAN.pth",
+        "dst": "model_bsrgan_4x.pt",
+        "name": "BSRGAN 4x",
     },
 ]
 

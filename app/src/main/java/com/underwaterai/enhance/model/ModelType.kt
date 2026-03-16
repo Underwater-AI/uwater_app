@@ -1,12 +1,12 @@
 package com.underwaterai.enhance.model
 
 /**
- * All models use Compact (SRVGGNetCompact) or SPAN architectures — pure CNNs
- * that are fully compatible with TorchScript tracing and fast on mobile ARM64.
+ * Models use Compact, SPAN, or ESRGAN (RRDBNet) architectures — all pure CNNs
+ * fully compatible with TorchScript tracing and optimized for mobile ARM64.
  *
- * [maxInputSide] is 640 for all models since they are lightweight enough
- * that model + tensors + bitmaps fit well within a 256 MB largeHeap.
- * Output: 640 * 4 = 2560px on the longest side.
+ * Compact/SPAN models (1–6 MB): [maxInputSide] = 640, giving 2560px output.
+ * ESRGAN models (≈64 MB): [maxInputSide] = 480, giving 1920px output.
+ * The reduced input size for ESRGAN prevents OOM on devices with 256 MB largeHeap.
  */
 enum class ModelType(
     val displayName: String,
@@ -16,6 +16,8 @@ enum class ModelType(
     val scaleFactor: Int,
     val maxInputSide: Int
 ) {
+    // ── Lightweight models (Compact / SPAN) ─────────────────────────────
+
     MODEL_1(
         displayName = "RealESR General",
         fileName = "model_realesr_general_4x.pt",
@@ -55,5 +57,40 @@ enum class ModelType(
         bestFor = "Best for: Degraded photos, noisy/compressed images",
         scaleFactor = 4,
         maxInputSide = 640
+    ),
+
+    // ── Heavy models (ESRGAN / RRDBNet) ─────────────────────────────────
+
+    MODEL_6(
+        displayName = "RealESRGAN x4plus",
+        fileName = "model_realesrgan_x4plus_4x.pt",
+        description = "ESRGAN architecture \u2014 Industry-standard high-fidelity upscaling",
+        bestFor = "Best for: General photos, high detail preservation",
+        scaleFactor = 4,
+        maxInputSide = 480
+    ),
+    MODEL_7(
+        displayName = "UltraSharp",
+        fileName = "model_ultrasharp_4x.pt",
+        description = "ESRGAN architecture \u2014 Maximum edge sharpness and texture detail",
+        bestFor = "Best for: Sharp photos, texture-rich images",
+        scaleFactor = 4,
+        maxInputSide = 480
+    ),
+    MODEL_8(
+        displayName = "Remacri",
+        fileName = "model_remacri_4x.pt",
+        description = "ESRGAN architecture \u2014 Photorealistic restoration with natural tones",
+        bestFor = "Best for: Portraits, natural scenes, photorealism",
+        scaleFactor = 4,
+        maxInputSide = 480
+    ),
+    MODEL_9(
+        displayName = "BSRGAN",
+        fileName = "model_bsrgan_4x.pt",
+        description = "ESRGAN architecture \u2014 Advanced degradation-aware restoration",
+        bestFor = "Best for: Heavily degraded, noisy, or compressed images",
+        scaleFactor = 4,
+        maxInputSide = 480
     );
 }

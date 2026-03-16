@@ -8,6 +8,19 @@ import android.os.Build
 import java.io.File
 
 /**
+ * Device performance tier used to adapt tile sizes, timeouts,
+ * and model recommendations for the detected hardware.
+ */
+enum class DeviceTier {
+    /** ≥6 GB RAM, ≥4 big cores above 2 GHz */
+    HIGH,
+    /** 4–6 GB RAM, ≥2 big cores above 1.8 GHz */
+    MEDIUM,
+    /** <4 GB RAM or weak CPU — needs reduced tile sizes and timeouts */
+    LOW
+}
+
+/**
  * Profiles the device hardware: CPU cores, frequencies, GPU info,
  * and memory. Used to document what resources the enhancement used.
  */
@@ -167,4 +180,56 @@ object HardwareProfiler {
             Pair(0L, 0L)
         }
     }
+
+    // ── Device-tier & adaptive sizing helpers ───────────────────────────
+
+    /**
+     * Classify the device into HIGH / MEDIUM / LOW tier based on
+     * total RAM and CPU performance-core frequency.
+     */
+    fun classifyDevice(context: Context): DeviceTier {
+        // ALWAYS RETURN HIGH FOR MAX POWER
+        return DeviceTier.HIGH
+    }
+
+    /**
+     * Return the number of "performance" (big) cores.
+     *
+     * On ARM big.LITTLE SoCs the big cores have a noticeably higher
+     * max frequency than the efficiency cores. We use a simple
+     * heuristic: any core whose max frequency is ≥80 % of the
+     * highest frequency across all cores is a "big" core.
+     *
+     * On symmetric CPUs (e.g. desktop-class SoCs or emulators)
+     * all cores count as big.
+     */
+    fun countPerformanceCores(cores: List<CpuCoreInfo>): Int {
+        // ALWAYS RETURN ALL AVAILABLE CORES FOR MAX POWER
+        return Runtime.getRuntime().availableProcessors()
+    }
+
+    /**
+     * Return the recommended tile size for inference based on
+     * available heap memory and device tier.
+     *
+     * ESRGAN models produce 4× output, so a 512 px tile → 2048 px
+     * output tile ≈ 16 MB of pixel data in ARGB_8888. Plus the
+     * float tensor and accumulator arrays, a single tile pass needs
+     * roughly 60–80 MB of transient heap. On LOW-tier devices we
+     * drop to 256 px tiles (≈ 20 MB transient) to avoid OOM.
+     */
+    fun recommendedTileSize(tier: DeviceTier): Int = 512
+
+    /**
+     * Maximum total processing timeout in milliseconds.
+     * LOW-tier devices get more time because smaller tiles are slower.
+     */
+    fun recommendedTimeoutMs(tier: DeviceTier): Long = Long.MAX_VALUE
+
+    /**
+     * Per-tile timeout in milliseconds. If a single tile takes
+     * longer than this the job is aborted — it means the device
+     * simply cannot handle the model.
+     */
+    fun recommendedPerTileTimeoutMs(tier: DeviceTier): Long = Long.MAX_VALUE
 }

@@ -234,10 +234,18 @@ fun HomeScreen(viewModel: EnhanceViewModel = viewModel()) {
                         }
                     )
 
+                    // Scale Selector
+                    ScaleSelector(
+                        selectedScale = uiState.selectedScale,
+                        onScaleSelected = { viewModel.selectScale(it) },
+                        enabled = !uiState.isProcessing
+                    )
+
                     // Enhance Button
                     EnhanceButton(
                         isProcessing = uiState.isProcessing,
                         modelName = uiState.selectedModel.displayName,
+                        selectedScale = uiState.selectedScale,
                         onClick = { viewModel.enhanceImage() }
                     )
                 }
@@ -523,6 +531,10 @@ private fun modelAccentColor(model: ModelType): Color {
         ModelType.MODEL_3 -> Color(0xFFF59E0B) // Amber
         ModelType.MODEL_4 -> Color(0xFFA78BFA) // Purple
         ModelType.MODEL_5 -> Color(0xFFEF4444) // Red
+        ModelType.MODEL_6 -> Color(0xFF6366F1) // Indigo
+        ModelType.MODEL_7 -> Color(0xFFEC4899) // Rose
+        ModelType.MODEL_8 -> Color(0xFF14B8A6) // Teal
+        ModelType.MODEL_9 -> Color(0xFFF97316) // Orange
     }
 }
 
@@ -630,7 +642,7 @@ fun OriginalImageView(bitmap: Bitmap, onChangeImage: () -> Unit) {
 }
 
 @Composable
-fun EnhanceButton(isProcessing: Boolean, modelName: String, onClick: () -> Unit) {
+fun EnhanceButton(isProcessing: Boolean, modelName: String, selectedScale: Int = 4, onClick: () -> Unit) {
     val infiniteTransition = rememberInfiniteTransition(label = "processing")
     val pulseAlpha by infiniteTransition.animateFloat(
         initialValue = 0.6f,
@@ -676,11 +688,69 @@ fun EnhanceButton(isProcessing: Boolean, modelName: String, onClick: () -> Unit)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "Enhance with $modelName",
+                text = "Enhance ${selectedScale}x with $modelName",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
         }
+    }
+}
+
+@Composable
+fun ScaleSelector(
+    selectedScale: Int,
+    onScaleSelected: (Int) -> Unit,
+    enabled: Boolean
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = "Output Scale",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            listOf(1, 2, 4).forEach { scale ->
+                val isSelected = scale == selectedScale
+                val accentColor = AccentCyan
+
+                OutlinedButton(
+                    onClick = { onScaleSelected(scale) },
+                    enabled = enabled,
+                    modifier = Modifier.weight(1f).height(48.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (isSelected) accentColor.copy(alpha = 0.15f) else Color.Transparent,
+                        contentColor = if (isSelected) accentColor else MaterialTheme.colorScheme.onSurfaceVariant
+                    ),
+                    border = androidx.compose.foundation.BorderStroke(
+                        width = if (isSelected) 2.dp else 1.dp,
+                        color = if (isSelected) accentColor else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                    )
+                ) {
+                    Text(
+                        text = "${scale}x",
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+        }
+
+        Text(
+            text = when (selectedScale) {
+                1 -> "Enhance quality without changing resolution"
+                2 -> "Double the resolution (2x width & height)"
+                else -> "Maximum upscale (4x width & height)"
+            },
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
