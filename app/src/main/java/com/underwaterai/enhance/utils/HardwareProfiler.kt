@@ -188,8 +188,20 @@ object HardwareProfiler {
      * total RAM and CPU performance-core frequency.
      */
     fun classifyDevice(context: Context): DeviceTier {
-        // ALWAYS RETURN HIGH FOR MAX POWER
-        return DeviceTier.HIGH
+        val memInfo = getMemoryInfo(context)
+        val totalRamMb = memInfo.first
+        
+        // Count performance cores
+        val runtime = Runtime.getRuntime()
+        val cores = runtime.availableProcessors()
+        val coreFreqs = readCpuFrequencies(cores)
+        val bigCores = countPerformanceCores(coreFreqs)
+        
+        return when {
+            totalRamMb >= 5800 && bigCores >= 4 -> DeviceTier.HIGH
+            totalRamMb >= 3800 && bigCores >= 2 -> DeviceTier.MEDIUM
+            else -> DeviceTier.LOW
+        }
     }
 
     /**
@@ -204,8 +216,11 @@ object HardwareProfiler {
      * all cores count as big.
      */
     fun countPerformanceCores(cores: List<CpuCoreInfo>): Int {
-        // ALWAYS RETURN ALL AVAILABLE CORES FOR MAX POWER
-        return Runtime.getRuntime().availableProcessors()
+        if (cores.isEmpty()) return Runtime.getRuntime().availableProcessors()
+        val maxFreq = cores.maxOfOrNull { it.maxFreqMhz } ?: return Runtime.getRuntime().availableProcessors()
+        if (maxFreq <= 0) return Runtime.getRuntime().availableProcessors()
+        
+        return cores.count { it.maxFreqMhz >= maxFreq * 0.8 }
     }
 
     /**
@@ -218,18 +233,30 @@ object HardwareProfiler {
      * roughly 60–80 MB of transient heap. On LOW-tier devices we
      * drop to 256 px tiles (≈ 20 MB transient) to avoid OOM.
      */
-    fun recommendedTileSize(tier: DeviceTier): Int = 512
+    fun recommendedTileSize(tier: DeviceTier): Int = when(tier) {
+        DeviceTier.HIGH -> 512
+        DeviceTier.MEDIUM -> 384
+        DeviceTier.LOW -> 256
+    }
 
     /**
      * Maximum total processing timeout in milliseconds.
      * LOW-tier devices get more time because smaller tiles are slower.
      */
-    fun recommendedTimeoutMs(tier: DeviceTier): Long = Long.MAX_VALUE
+    fun recommendedTimeoutMs(tier: DeviceTier): Long = when(tier) {
+        DeviceTier.HIGH -> 60_000L      // 60 seconds
+        DeviceTier.MEDIUM -> 120_000L   // 120 seconds
+        DeviceTier.LOW -> 180_000L      // 180 seconds
+    }
 
     /**
      * Per-tile timeout in milliseconds. If a single tile takes
      * longer than this the job is aborted — it means the device
      * simply cannot handle the model.
      */
-    fun recommendedPerTileTimeoutMs(tier: DeviceTier): Long = Long.MAX_VALUE
+    fun recommendedPerTileTimeoutMs(tier: DeviceTier): Long = when(tier) {
+        DeviceTier.HIGH -> 10_000L       // 10 seconds
+        DeviceTier.MEDIUM -> 20_000L     // 20 seconds
+        DeviceTier.LOW -> 30_000L        // 30 seconds
+    }
 }
