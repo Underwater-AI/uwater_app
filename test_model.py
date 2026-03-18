@@ -42,6 +42,7 @@ MODELS = [
     ("model_ultrasharp_4x.pt",         "UltraSharp",             "ESRGAN",      63.9),
     ("model_remacri_4x.pt",            "Remacri",                "ESRGAN",      63.9),
     ("model_bsrgan_4x.pt",            "BSRGAN",                 "ESRGAN",      63.9),
+    ("model_weird_mix_4x.pt",          "Weird Mix",              "ESRGAN",      63.9),
 ]
 
 SCALE_FACTOR = 4

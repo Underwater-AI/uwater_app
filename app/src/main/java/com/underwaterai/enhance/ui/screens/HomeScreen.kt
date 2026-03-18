@@ -535,6 +535,7 @@ private fun modelAccentColor(model: ModelType): Color {
         ModelType.MODEL_7 -> Color(0xFFEC4899) // Rose
         ModelType.MODEL_8 -> Color(0xFF14B8A6) // Teal
         ModelType.MODEL_9 -> Color(0xFFF97316) // Orange
+        ModelType.MODEL_10 -> Color(0xFF8B5CF6) // Deep Purple
     }
 }
 

@@ -92,5 +92,13 @@ enum class ModelType(
         bestFor = "Best for: Heavily degraded, noisy, or compressed images",
         scaleFactor = 4,
         maxInputSide = 480
+    ),
+    MODEL_10(
+        displayName = "Weird Mix",
+        fileName = "model_weird_mix_4x.pt",
+        description = "Hybrid architecture \u2014 A custom amalgamation of all models",
+        bestFor = "Best for: Everything",
+        scaleFactor = 4,
+        maxInputSide = 480
     );
 }
