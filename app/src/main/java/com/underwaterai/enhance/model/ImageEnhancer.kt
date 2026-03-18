@@ -50,21 +50,15 @@ class ImageEnhancer(private val context: Context) {
     }
 
     /**
-     * Configure PyTorch to use only the performance (big) CPU cores.
-     *
-     * On ARM big.LITTLE SoCs the efficiency cores have ~50 % lower
-     * max frequency and significantly weaker IPC, dragging down overall
-     * throughput when PyTorch spreads work across all cores.
-     * Limiting to big cores keeps every thread on the fast cluster.
+     * Configure PyTorch to use optimal CPU cores.
      */
     private fun configureThreads() {
         val snap = HardwareProfiler.snapshot(context)
-        val bigCores = HardwareProfiler.countPerformanceCores(snap.cpuCoreFrequencies)
-        // Fall back to all cores if detection returned 0 somehow
-        val threadCount = if (bigCores > 0) bigCores else Runtime.getRuntime().availableProcessors()
+        // Use performance cores for better throughput without hitting thread sync bottleneck
+        val threadCount = HardwareProfiler.countPerformanceCores(snap.cpuCoreFrequencies).coerceAtLeast(1)
         try {
             org.pytorch.PyTorchAndroid.setNumThreads(threadCount)
-            AppLogger.i(TAG, "PyTorch threads set to $threadCount performance cores (${snap.cpuCoreFrequencies.size} total)")
+            AppLogger.i(TAG, "PyTorch threads set to $threadCount cores (${snap.cpuCoreFrequencies.size} total)")
         } catch (e: Throwable) {
             AppLogger.w(TAG, "setNumThreads unavailable (${e.javaClass.simpleName}), using defaults")
         }
