@@ -1,19 +1,9 @@
-import re
-
-with open('app/src/test/java/com/underwaterai/enhance/utils/HardwareProfilerTest.kt', 'r') as f:
+with open('app/src/main/java/com/underwaterai/enhance/model/ObjectDetector.kt', 'r') as f:
     text = f.read()
 
-# remove one of the duplicates
-text = text.replace('''    @Test
-    fun `countPerformanceCores - counts only performance cores properly`() {
-        val cores = listOf(
-            HardwareProfiler.CpuCoreInfo(0, 1800, 2000),
-            HardwareProfiler.CpuCoreInfo(1, 1700, 2000),
-            HardwareProfiler.CpuCoreInfo(2, 1000, 1200)
-        )
-        // 2000 * 0.8 = 1600. Cores 0 and 1 have maxFreq >= 1600. Core 2 does not.
-        assertEquals(2, HardwareProfiler.countPerformanceCores(cores))
-    }''', '', 1)
+import re
+text = text.replace('org.pytorch.LiteModuleLoader.load(modelPath)', 'org.pytorch.Module.load(modelPath)')
 
-with open('app/src/test/java/com/underwaterai/enhance/utils/HardwareProfilerTest.kt', 'w') as f:
+with open('app/src/main/java/com/underwaterai/enhance/model/ObjectDetector.kt', 'w') as f:
     f.write(text)
+

@@ -297,7 +297,7 @@ class EnhanceViewModel(application: Application) : AndroidViewModel(application)
                 val waterQuality = FeatureExtensions.analyzeWaterQuality(original)
                 
                 // Feature 11: Benthic Coverage
-                val coverage = MarineResearchServices.mapBenthicCoverage(100f)
+                val coverage = MarineResearchServices.mapBenthicCoverage(100f, r, g, b)
                 val coverageStr = coverage.entries.joinToString(", ") { "${it.key}: ${it.value}%" }
                 
                 // Feature 13: Plankton Detection (adjusted by detections)

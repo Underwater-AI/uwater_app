@@ -35,9 +35,21 @@ object MarineResearchServices {
     }
 
     // 11. Benthic Coverage Mapping (Semantic topological extrapolation)
-    fun mapBenthicCoverage(areaSquareMeters: Float): Map<String, Float> {
+    fun mapBenthicCoverage(areaSquareMeters: Float, r: Int, g: Int, b: Int): Map<String, Float> {
         // Returns percentage mappings of sea floor
-        return mapOf("Coral" to 42.5f, "Sand" to 35.0f, "Rock" to 15.5f, "Algae" to 7.0f)
+        
+        val total = (r + g + b).toFloat().coerceAtLeast(1f)
+        val coralEst = (r / total) * 100f
+        val algaeEst = (g / total) * 100f
+        val sandEst = (b / total) * 70f
+        val remaining = Math.max(0f, 100f - coralEst - algaeEst - sandEst)
+        return mapOf(
+            "Coral (Est)" to kotlin.math.round(coralEst * 10f) / 10f, 
+            "Algae/Plant" to kotlin.math.round(algaeEst * 10f) / 10f, 
+            "Sand/Water" to kotlin.math.round(sandEst * 10f) / 10f, 
+            "Other/Rock" to kotlin.math.round(remaining * 10f) / 10f
+        )
+
     }
 
     // 12. Fish Tracking & Counting (Temporal UUID allocation across bounding boxes)

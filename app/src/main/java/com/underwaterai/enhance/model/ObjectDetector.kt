@@ -24,8 +24,19 @@ class ObjectDetector(private val context: Context) {
     private var labels = emptyArray<String>()
 
     fun loadModel() {
+        // Force torchvision JNI init
+        try {
+            System.loadLibrary("pytorch_vision_jni")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
+            org.pytorch.torchvision.TensorImageUtils.TORCHVISION_NORM_MEAN_RGB
+            org.pytorch.PyTorchAndroid.setNumThreads(Runtime.getRuntime().availableProcessors())
+        } catch (e: Exception) {}
+        
         val modelPath = assetFilePath(context, "models/detector_ssdlite.ptl")
-        module = Module.load(modelPath)
+        module = org.pytorch.Module.load(modelPath)
         
         val labelsPath = assetFilePath(context, "models/coco_classes.txt")
         labels = File(labelsPath).readLines().toTypedArray()

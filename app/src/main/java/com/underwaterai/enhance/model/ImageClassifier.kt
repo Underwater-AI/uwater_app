@@ -30,6 +30,7 @@ class ImageClassifier(private val context: Context) {
     private fun loadModel() {
         try {
             val modelFile = assetFilePath(context, MODEL_FILENAME)
+            org.pytorch.PyTorchAndroid.setNumThreads(Runtime.getRuntime().availableProcessors())
             module = Module.load(modelFile)
             labels = loadLabels(context, LABELS_FILENAME)
         } catch (e: Exception) {
