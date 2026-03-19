@@ -271,13 +271,13 @@ class ImageEnhancerLogicTest {
     }
 
     @Test
-    fun `timeouts are equal everywhere to maximize processing capability`() {
+    fun `timeouts are longer for lower end devices to allow processing`() {
         val highTotal = HardwareProfiler.recommendedTimeoutMs(DeviceTier.HIGH)
         val lowTotal = HardwareProfiler.recommendedTimeoutMs(DeviceTier.LOW)
-        assertEquals(lowTotal, highTotal)
+        assertTrue(lowTotal > highTotal)
 
         val highPerTile = HardwareProfiler.recommendedPerTileTimeoutMs(DeviceTier.HIGH)
         val lowPerTile = HardwareProfiler.recommendedPerTileTimeoutMs(DeviceTier.LOW)
-        assertEquals(lowPerTile, highPerTile)
+        assertTrue(lowPerTile > highPerTile)
     }
 }

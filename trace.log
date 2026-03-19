@@ -1,0 +1,7 @@
+Loading...
+Tracing... (this might take a few minutes)
+Tracing done in 10.21s
+Traced model saved to models/mobile/model_weird_mix_4x_traced.pt
+Optimizing...
+Optimizing done in 36.79s
+Saved lite: models/mobile/model_weird_mix_4x.pt

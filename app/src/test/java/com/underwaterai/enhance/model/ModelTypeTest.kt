@@ -13,8 +13,8 @@ import org.junit.Test
 class ModelTypeTest {
 
     @Test
-    fun `all 9 models are defined`() {
-        assertEquals(9, ModelType.entries.size)
+    fun `all 10 models are defined`() {
+        assertEquals(10, ModelType.entries.size)
     }
 
     @Test

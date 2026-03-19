@@ -1,0 +1,5 @@
+Loaded models/4x-UltraSharp.pth, arch: <spandrel.architectures.ESRGAN.ESRGANArch object at 0x7f78a0847380>
+Loaded models/4x_foolhardy_Remacri.pth, arch: <spandrel.architectures.ESRGAN.ESRGANArch object at 0x7f78a0847380>
+Loaded models/BSRGAN.pth, arch: <spandrel.architectures.ESRGAN.ESRGANArch object at 0x7f78a0847380>
+Loaded models/RealESRGAN_x4plus.pth, arch: <spandrel.architectures.ESRGAN.ESRGANArch object at 0x7f78a0847380>
+Saved models/weird_mix.pth!

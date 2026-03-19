@@ -14,48 +14,44 @@ class HardwareProfilerTest {
 
     // ── countPerformanceCores ────────────────────────────────────────
 
-    @Test
-    fun `countPerformanceCores - always returns availableProcessors for max power`() {
-        val cores = listOf(
-            HardwareProfiler.CpuCoreInfo(0, 1800, 2000),
-            HardwareProfiler.CpuCoreInfo(1, 1700, 2000)
-        )
-        // Regardless of input, it should return available processors
-        assertEquals(Runtime.getRuntime().availableProcessors(), HardwareProfiler.countPerformanceCores(cores))
-    }
+
 
     @Test
-    fun `countPerformanceCores - empty list falls back to availableProcessors`() {
-        val result = HardwareProfiler.countPerformanceCores(emptyList())
-        assertTrue("Should return at least 1 core", result >= 1)
-        assertEquals(Runtime.getRuntime().availableProcessors(), result)
+    fun `countPerformanceCores - counts only performance cores properly`() {
+        val cores = listOf(
+            HardwareProfiler.CpuCoreInfo(0, 1800, 2000),
+            HardwareProfiler.CpuCoreInfo(1, 1700, 2000),
+            HardwareProfiler.CpuCoreInfo(2, 1000, 1200)
+        )
+        // 2000 * 0.8 = 1600. Cores 0 and 1 have maxFreq >= 1600. Core 2 does not.
+        assertEquals(2, HardwareProfiler.countPerformanceCores(cores))
     }
 
     // ── recommendedTileSize ─────────────────────────────────────────
 
     @Test
-    fun `recommendedTileSize - always returns 512 regardless of tier`() {
+    fun `recommendedTileSize - scales based on tier`() {
         assertEquals(512, HardwareProfiler.recommendedTileSize(DeviceTier.HIGH))
-        assertEquals(512, HardwareProfiler.recommendedTileSize(DeviceTier.MEDIUM))
-        assertEquals(512, HardwareProfiler.recommendedTileSize(DeviceTier.LOW))
+        assertEquals(384, HardwareProfiler.recommendedTileSize(DeviceTier.MEDIUM))
+        assertEquals(256, HardwareProfiler.recommendedTileSize(DeviceTier.LOW))
     }
 
     // ── recommendedTimeoutMs ────────────────────────────────────────
 
     @Test
-    fun `recommendedTimeoutMs - always returns Long MAX_VALUE regardless of tier`() {
-        assertEquals(Long.MAX_VALUE, HardwareProfiler.recommendedTimeoutMs(DeviceTier.HIGH))
-        assertEquals(Long.MAX_VALUE, HardwareProfiler.recommendedTimeoutMs(DeviceTier.MEDIUM))
-        assertEquals(Long.MAX_VALUE, HardwareProfiler.recommendedTimeoutMs(DeviceTier.LOW))
+    fun `recommendedTimeoutMs - scales based on tier`() {
+        assertEquals(60_000L, HardwareProfiler.recommendedTimeoutMs(DeviceTier.HIGH))
+        assertEquals(120_000L, HardwareProfiler.recommendedTimeoutMs(DeviceTier.MEDIUM))
+        assertEquals(180_000L, HardwareProfiler.recommendedTimeoutMs(DeviceTier.LOW))
     }
 
     // ── recommendedPerTileTimeoutMs ─────────────────────────────────
 
     @Test
-    fun `recommendedPerTileTimeoutMs - always returns Long MAX_VALUE regardless of tier`() {
-        assertEquals(Long.MAX_VALUE, HardwareProfiler.recommendedPerTileTimeoutMs(DeviceTier.HIGH))
-        assertEquals(Long.MAX_VALUE, HardwareProfiler.recommendedPerTileTimeoutMs(DeviceTier.MEDIUM))
-        assertEquals(Long.MAX_VALUE, HardwareProfiler.recommendedPerTileTimeoutMs(DeviceTier.LOW))
+    fun `recommendedPerTileTimeoutMs - scales based on tier`() {
+        assertEquals(10_000L, HardwareProfiler.recommendedPerTileTimeoutMs(DeviceTier.HIGH))
+        assertEquals(20_000L, HardwareProfiler.recommendedPerTileTimeoutMs(DeviceTier.MEDIUM))
+        assertEquals(30_000L, HardwareProfiler.recommendedPerTileTimeoutMs(DeviceTier.LOW))
     }
 
     // ── DeviceTier enum ─────────────────────────────────────────────
