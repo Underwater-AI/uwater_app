@@ -281,6 +281,8 @@ fun HomeScreen(viewModel: EnhanceViewModel = viewModel()) {
             }
 
 
+
+
             // Analysis Report
             uiState.analysisReport?.let { report ->
                 Card(
@@ -306,17 +308,65 @@ fun HomeScreen(viewModel: EnhanceViewModel = viewModel()) {
                                 Icon(Icons.Filled.Close, contentDescription = "Close Report")
                             }
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        uiState.annotatedBitmap?.let { bmp ->
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Detections Highlighted:", style = MaterialTheme.typography.labelMedium)
+                            Image(
+                                bitmap = bmp.asImageBitmap(),
+                                contentDescription = "Annotated Image",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                                    .clip(RoundedCornerShape(8.dp)),
+                                contentScale = ContentScale.Fit
+                            )
+                        }
+                        
+                        uiState.histogramBitmap?.let { hist ->
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text("RGB Color Distribution (Chlorophyll/Depth proxy):", style = MaterialTheme.typography.labelMedium)
+                            Image(
+                                bitmap = hist.asImageBitmap(),
+                                contentDescription = "RGB Histogram",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(120.dp)
+                                    .clip(RoundedCornerShape(8.dp)),
+                                contentScale = ContentScale.FillBounds
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = report,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                        
+                        uiState.cpuStats?.let { stats ->
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                "Hardware Execution Trace:",
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = stats,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontFamily = FontFamily.Monospace
+                            )
+                        }
                     }
                 }
             }
 
             // Error Message
+
+
 
             uiState.errorMessage?.let { error ->
                 Card(
