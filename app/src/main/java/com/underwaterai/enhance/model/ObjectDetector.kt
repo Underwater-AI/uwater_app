@@ -24,16 +24,7 @@ class ObjectDetector(private val context: Context) {
     private var labels = emptyArray<String>()
 
     fun loadModel() {
-        // Force torchvision JNI init
-        try {
-            System.loadLibrary("pytorch_vision_jni")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        try {
-            org.pytorch.torchvision.TensorImageUtils.TORCHVISION_NORM_MEAN_RGB
             org.pytorch.PyTorchAndroid.setNumThreads(Runtime.getRuntime().availableProcessors())
-        } catch (e: Exception) {}
         
         val modelPath = assetFilePath(context, "models/detector_ssdlite.ptl")
         module = org.pytorch.Module.load(modelPath)
@@ -66,8 +57,12 @@ class ObjectDetector(private val context: Context) {
             TensorImageUtils.TORCHVISION_NORM_STD_RGB
         )
 
-        // The model expects a List of Tensors: List[Tensor]
-        val inputs = IValue.listFrom(inputTensor)
+        // The model expects a List of 3D Tensors: List[Tensor[C, H, W]]
+        val tensor3d = org.pytorch.Tensor.fromBlob(
+            inputTensor.dataAsFloatArray,
+            longArrayOf(3, targetSize.toLong(), targetSize.toLong())
+        )
+        val inputs = IValue.listFrom(tensor3d)
         val outputTuple = mod.forward(inputs).toTuple()
 
         // SSDLite TorchScript eval output is a tuple: (Dict[str, Tensor], List[Dict[str, Tensor]])
