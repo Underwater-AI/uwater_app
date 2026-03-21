@@ -24,7 +24,6 @@ class ObjectDetector(private val context: Context) {
     private var labels = emptyArray<String>()
 
     fun loadModel() {
-            org.pytorch.PyTorchAndroid.setNumThreads(Runtime.getRuntime().availableProcessors())
         
         val modelPath = assetFilePath(context, "models/detector_ssdlite.ptl")
         module = org.pytorch.Module.load(modelPath)

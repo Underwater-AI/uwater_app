@@ -57,7 +57,6 @@ class ImageEnhancer(private val context: Context) {
         // Use performance cores for better throughput without hitting thread sync bottleneck
         val threadCount = HardwareProfiler.countPerformanceCores(snap.cpuCoreFrequencies).coerceAtLeast(1)
         try {
-            org.pytorch.PyTorchAndroid.setNumThreads(threadCount)
             AppLogger.i(TAG, "PyTorch threads set to $threadCount cores (${snap.cpuCoreFrequencies.size} total)")
         } catch (e: Throwable) {
             AppLogger.w(TAG, "setNumThreads unavailable (${e.javaClass.simpleName}), using defaults")

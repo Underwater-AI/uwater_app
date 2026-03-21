@@ -1,16 +1,19 @@
-with open('app/src/main/java/com/underwaterai/enhance/model/ObjectDetector.kt', 'r') as f:
-    text = f.read()
+import os
+import glob
 
-text = text.replace('org.pytorch.PyTorchAndroid.setNumThreads(4)', 'org.pytorch.PyTorchAndroid.setNumThreads(Runtime.getRuntime().availableProcessors())')
+def remove_setNumThreads():
+    files = glob.glob("app/src/main/java/com/underwaterai/enhance/model/*.kt")
+    for filepath in files:
+        with open(filepath, "r") as f:
+            lines = f.readlines()
+        
+        new_lines = []
+        for line in lines:
+            if "org.pytorch.PyTorchAndroid.setNumThreads" not in line:
+                new_lines.append(line)
+        
+        with open(filepath, "w") as f:
+            f.writelines(new_lines)
 
-with open('app/src/main/java/com/underwaterai/enhance/model/ObjectDetector.kt', 'w') as f:
-    f.write(text)
-
-with open('app/src/main/java/com/underwaterai/enhance/model/ImageClassifier.kt', 'r') as f:
-    text = f.read()
-
-import re
-text = text.replace('module = Module.load(modelFile)', 'org.pytorch.PyTorchAndroid.setNumThreads(Runtime.getRuntime().availableProcessors())\\n            module = Module.load(modelFile)')
-with open('app/src/main/java/com/underwaterai/enhance/model/ImageClassifier.kt', 'w') as f:
-    f.write(text)
-
+remove_setNumThreads()
+print("Done")
