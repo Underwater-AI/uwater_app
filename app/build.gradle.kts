@@ -110,8 +110,8 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     // PyTorch Mobile (full – includes Vulkan GPU backend for Adreno/Mali)
-    implementation("org.pytorch:pytorch_android:2.1.0")
-    implementation("org.pytorch:pytorch_android_torchvision:2.1.0")
+    implementation("org.pytorch:pytorch_android_lite:2.1.0")
+    implementation("org.pytorch:pytorch_android_torchvision_lite:2.1.0")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")

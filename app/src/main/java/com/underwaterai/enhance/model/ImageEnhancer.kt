@@ -112,7 +112,7 @@ class ImageEnhancer(private val context: Context) {
         inputBitmap: Bitmap,
         modelType: ModelType,
         targetScale: Int = modelType.scaleFactor
-    ): Pair<Bitmap, PerformanceMetrics> = withContext(Dispatchers.Default) {
+    ): Pair<Bitmap, PerformanceMetrics> {
         ensureDeviceTier()
 
         // Boost thread priority for inference – use THREAD_PRIORITY_URGENT_DISPLAY
@@ -138,7 +138,7 @@ class ImageEnhancer(private val context: Context) {
         }
 
         try {
-            runEnhancement(inputBitmap, modelType, targetScale)
+            return runEnhancement(inputBitmap, modelType, targetScale)
         } finally {
             // Restore original thread priority
             try { Process.setThreadPriority(prevPriority) } catch (_: Throwable) {}

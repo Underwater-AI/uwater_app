@@ -23,11 +23,11 @@ class ImageClassifier(private val context: Context) {
     private var module: Module? = null
     private var labels: List<String>? = null
 
-    init {
-        loadModel()
-    }
+    
 
-    private fun loadModel() {
+    fun loadModelIfNeeded() {
+        if (module != null) return
+
         try {
             val modelFile = assetFilePath(context, MODEL_FILENAME)
             module = Module.load(modelFile)
@@ -37,9 +37,9 @@ class ImageClassifier(private val context: Context) {
         }
     }
 
-    suspend fun classify(bitmap: Bitmap): List<Prediction>? = withContext(Dispatchers.Default) {
-        val mod = module ?: return@withContext null
-        val labs = labels ?: return@withContext null
+    suspend fun classify(bitmap: Bitmap): List<Prediction>? {
+        val mod = module ?: return null
+        val labs = labels ?: return null
 
         val scale = Math.max(INPUT_SIZE.toFloat() / bitmap.width, INPUT_SIZE.toFloat() / bitmap.height)
         val scaledWidth = Math.max(1, Math.round(bitmap.width * scale))
@@ -81,7 +81,7 @@ class ImageClassifier(private val context: Context) {
         for (i in 0 until n) {
             pq.poll()?.let { top3.add(it) }
         }
-        return@withContext top3
+        return top3
     }
     
     data class Prediction(val label: String, val score: Float, val isInvasive: Boolean = false)

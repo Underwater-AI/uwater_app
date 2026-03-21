@@ -23,7 +23,9 @@ class ObjectDetector(private val context: Context) {
     private var module: Module? = null
     private var labels = emptyArray<String>()
 
-    fun loadModel() {
+    fun loadModelIfNeeded() {
+        if (module != null) return
+
         
         val modelPath = assetFilePath(context, "models/detector_ssdlite.ptl")
         module = org.pytorch.Module.load(modelPath)
@@ -32,7 +34,7 @@ class ObjectDetector(private val context: Context) {
         labels = File(labelsPath).readLines().toTypedArray()
     }
 
-    suspend fun detect(bitmap: Bitmap, threshold: Float = 0.5f): List<DetectionResult> = withContext(Dispatchers.Default) {
+    suspend fun detect(bitmap: Bitmap, threshold: Float = 0.5f): List<DetectionResult> {
         val mod = module ?: throw IllegalStateException("Model is not loaded")
 
         val targetSize = 320
@@ -68,9 +70,9 @@ class ObjectDetector(private val context: Context) {
         val outputList = outputTuple[1].toList()
         val resultDict = outputList[0].toDictStringKey()
 
-        val boxesTensor = resultDict["boxes"]?.toTensor() ?: return@withContext emptyList()
-        val scoresTensor = resultDict["scores"]?.toTensor() ?: return@withContext emptyList()
-        val labelsTensor = resultDict["labels"]?.toTensor() ?: return@withContext emptyList()
+        val boxesTensor = resultDict["boxes"]?.toTensor() ?: return emptyList()
+        val scoresTensor = resultDict["scores"]?.toTensor() ?: return emptyList()
+        val labelsTensor = resultDict["labels"]?.toTensor() ?: return emptyList()
         
         val boxes = boxesTensor.dataAsFloatArray
         val scores = scoresTensor.dataAsFloatArray
@@ -100,7 +102,7 @@ class ObjectDetector(private val context: Context) {
             }
         }
 
-        return@withContext results
+        return results
     }
 
     @Throws(IOException::class)

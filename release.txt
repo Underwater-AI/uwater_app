@@ -1,0 +1,16 @@
+title:	Release v7.3.0 - Threading & Native Segfault Fix
+tag:	v7.3.0
+draft:	true
+prerelease:	false
+immutable:	false
+author:	Shuvam-Banerji-Seal
+created:	2026-03-21T16:24:32Z
+url:	https://github.com/Underwater-AI/uwater_app/releases/tag/untagged-beb008d559c981a8e7e6
+--
+# v7.3.0 - PyTorch Native JNI Segfault & Threading Patches
+
+## Critical Fixes
+- **`libpytorch_jni.so` Threading Segfault Fix:** Addressed a critical crash originating within `libc.so` (`__pthread_start`) on heavy Android models (like POCO onyx). We observed that aggressively mapping `org.pytorch.PyTorchAndroid.setNumThreads()` concurrently and repeatedly with `Runtime.getRuntime().availableProcessors()` on big.LITTLE architectures destroyed PyTorch's native XNNPACK thread pool boundaries. The backend is now fully stable, allowing dynamic core scaling via standard QNN limits without segfaulting thread generation.
+- **Deep Cleaned Native Concurrency:** Both `ObjectDetector` and `ImageClassifier` native inferences now initialize strictly bounded thread memory without overwriting global contexts aggressively on each viewmodel instantiation.
+
+Enjoy fully stable inference across all 3 AI models concurrently!
