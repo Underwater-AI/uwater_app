@@ -1,1 +1,63 @@
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.5/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:checkReleaseAarMetadata UP-TO-DATE
+> Task :app:generateReleaseResValues UP-TO-DATE
+> Task :app:mapReleaseSourceSetPaths UP-TO-DATE
+> Task :app:generateReleaseResources UP-TO-DATE
+> Task :app:packageReleaseResources UP-TO-DATE
+> Task :app:parseReleaseLocalResources UP-TO-DATE
+> Task :app:createReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRelease UP-TO-DATE
+> Task :app:processReleaseMainManifest UP-TO-DATE
+> Task :app:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseManifestForPackage UP-TO-DATE
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :app:mergeReleaseNativeLibs UP-TO-DATE
+> Task :app:stripReleaseDebugSymbols UP-TO-DATE
+> Task :app:extractReleaseNativeSymbolTables UP-TO-DATE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:mergeReleaseResources FAILED
+> Task :app:checkReleaseDuplicateClasses UP-TO-DATE
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:mergeReleaseResources'.
+> Multiple task action failures occurred:
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-de/values-de.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-hi/values-hi.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-lo/values-lo.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-pt/values-pt.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-lt/values-lt.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-hr/values-hr.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-lv/values-lv.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-hu/values-hu.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-en-rIN/values-en-rIN.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-hy/values-hy.xml (No such file or directory). Cause: null). Check logs for more details.
+   > A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+      > Resource compilation failed (/home/shuvam/codes/underwater-ai/uwater_app/app/build/intermediates/incremental/release/mergeReleaseResources/merged.dir/values-uk/values-uk.xml (No such file or directory). Cause: null). Check logs for more details.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 2m 43s
+20 actionable tasks: 2 executed, 18 up-to-date

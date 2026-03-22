@@ -1,0 +1,61 @@
+code/__torch__/torchvision/models/detection/ssd/___torch_mangle_726.py:970: UserWarning: SSD always returns a (Losses, Detections) tuple in scripting
+--- Underwater AI Comprehensive Test Suite ---
+
+--- 1. Testing Classification ---
+
+[Classifier - underwater_test.jpg]
+1-thread inference: 0.109s
+4-thread inference: 0.046s
+  wool: 0.4636
+  coil: 0.2207
+  abacus: 0.0446
+
+[Classifier - uw_000.jpg]
+1-thread inference: 0.029s
+4-thread inference: 0.029s
+  grey fox: 0.8344
+  red fox: 0.0405
+  rule: 0.0280
+
+[Classifier - uw_001.jpg]
+1-thread inference: 0.034s
+4-thread inference: 0.027s
+  golf ball: 0.9032
+  thimble: 0.0178
+  rule: 0.0165
+
+[Classifier - uw_002.jpg]
+1-thread inference: 0.032s
+4-thread inference: 0.027s
+  great white shark: 0.0606
+  drumstick: 0.0435
+  killer whale: 0.0279
+
+[Classifier - uw_003.jpg]
+1-thread inference: 0.032s
+4-thread inference: 0.027s
+  strainer: 0.4642
+  ping-pong ball: 0.3658
+  spotlight: 0.0745
+
+[Classifier - uw_004.jpg]
+1-thread inference: 0.033s
+4-thread inference: 0.027s
+  leopard: 0.1259
+  cheetah: 0.0510
+  dingo: 0.0432
+
+[Classifier - uw_005.jpg]
+1-thread inference: 0.033s
+4-thread inference: 0.027s
+  wool: 0.3795
+  tiger cat: 0.0826
+  shopping basket: 0.0815
+
+--- 2. Testing Detection ---
+
+[Detector - underwater_test.jpg]
+1-thread inference: 1.454s
+4-thread inference: 0.762s
+Detection failed: 'dict' object has no attribute 'shape'
+Tests finished.

@@ -93,4 +93,22 @@ object MarineResearchServices {
         // Hooks to REST architecture for secure scientific uploading
         return payload.isNotEmpty()
     }
+
+    // Advanced Feature: Biodiversity Index Calculation (Shannon-Wiener Index Proxy)
+    fun calculateBiodiversityIndex(detections: List<String>, classifications: List<String>): Double {
+        val allEntities = detections + classifications
+        if (allEntities.isEmpty()) return 0.0
+        
+        val counts = allEntities.groupingBy { it }.eachCount()
+        val total = allEntities.size.toDouble()
+        
+        var shannonIndex = 0.0
+        for (count in counts.values) {
+            val p = count / total
+            if (p > 0) {
+                shannonIndex -= p * kotlin.math.ln(p)
+            }
+        }
+        return kotlin.math.round(shannonIndex * 100.0) / 100.0
+    }
 }

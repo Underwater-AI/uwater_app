@@ -1,0 +1,84 @@
+--- Underwater AI Comprehensive Test Suite ---
+
+--- 1. Testing Classification ---
+
+[Classifier - underwater_test.jpg]
+1-thread inference: 0.103s
+4-thread inference: 0.029s
+  wool: 0.4636
+  coil: 0.2207
+  abacus: 0.0446
+
+[Classifier - uw_000.jpg]
+1-thread inference: 0.013s
+4-thread inference: 0.013s
+  grey fox: 0.8344
+  red fox: 0.0405
+  rule: 0.0280
+
+[Classifier - uw_001.jpg]
+1-thread inference: 0.013s
+4-thread inference: 0.013s
+  golf ball: 0.9032
+  thimble: 0.0178
+  rule: 0.0165
+
+[Classifier - uw_002.jpg]
+1-thread inference: 0.012s
+4-thread inference: 0.013s
+  great white shark: 0.0606
+  drumstick: 0.0435
+  killer whale: 0.0279
+
+[Classifier - uw_003.jpg]
+1-thread inference: 0.012s
+4-thread inference: 0.014s
+  strainer: 0.4642
+  ping-pong ball: 0.3658
+  spotlight: 0.0745
+
+[Classifier - uw_004.jpg]
+1-thread inference: 0.012s
+4-thread inference: 0.013s
+  leopard: 0.1259
+  cheetah: 0.0510
+  dingo: 0.0432
+
+[Classifier - uw_005.jpg]
+1-thread inference: 0.012s
+4-thread inference: 0.013s
+  wool: 0.3795
+  tiger cat: 0.0826
+  shopping basket: 0.0815
+
+--- 2. Testing Detection ---
+
+[Detector - underwater_test.jpg]
+Detection failed: forward() Expected a value of type 'List[Tensor]' for argument 'images' but instead found type 'Tensor'.
+Position: 1
+Value: tensor([[[[0.0392, 0.1020, 0.1294,  ..., 0.0000, 0.0000, 0.0000],
+          [0.0588, 0.1020, 0.1294,  ..., 0.0000, 0.0000, 0.0000],
+          [0.0745, 0.0980, 0.1294,  ..., 0.0000, 0.0000, 0.0000],
+          ...,
+          [0.0000, 0.0118, 0.0314,  ..., 0.2941, 0.2784, 0.2275],
+          [0.0000, 0.0039, 0.0118,  ..., 0.3294, 0.2627, 0.1647],
+          [0.0000, 0.0000, 0.0000,  ..., 0.3529, 0.2510, 0.1137]],
+
+         [[0.0353, 0.0902, 0.0941,  ..., 0.4039, 0.3843, 0.3765],
+          [0.0549, 0.0902, 0.0941,  ..., 0.4039, 0.3843, 0.3765],
+          [0.0706, 0.0863, 0.0980,  ..., 0.4039, 0.3882, 0.3804],
+          ...,
+          [0.0039, 0.0157, 0.0353,  ..., 0.4471, 0.4118, 0.3569],
+          [0.0000, 0.0039, 0.0118,  ..., 0.4824, 0.4039, 0.2980],
+          [0.0000, 0.0000, 0.0000,  ..., 0.5059, 0.3961, 0.2471]],
+
+         [[0.0157, 0.0706, 0.0980,  ..., 0.6196, 0.6000, 0.5922],
+          [0.0353, 0.0706, 0.0902,  ..., 0.6196, 0.6000, 0.5922],
+          [0.0510, 0.0667, 0.0824,  ..., 0.6196, 0.6000, 0.5961],
+          ...,
+          [0.0000, 0.0039, 0.0157,  ..., 0.4745, 0.4471, 0.3922],
+          [0.0000, 0.0000, 0.0039,  ..., 0.5098, 0.4353, 0.3333],
+          [0.0000, 0.0000, 0.0000,  ..., 0.5333, 0.4275, 0.2824]]]])
+Declaration: forward(__torch__.torchvision.models.detection.ssd.___torch_mangle_726.SSD self, Tensor[] images, Dict(str, Tensor)[]? targets=None) -> ((Dict(str, Tensor), Dict(str, Tensor)[]))
+Cast error details: Unable to cast Python instance of type <class 'torch.Tensor'> to C++ type '?' (#define PYBIND11_DETAILED_ERROR_MESSAGES or compile in debug mode for details)
+Tests finished.

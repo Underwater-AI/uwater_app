@@ -1,3 +1,5 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.5/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
 > Task :app:preBuild UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
@@ -24,13 +26,14 @@
 > Task :app:mergeDebugAssets UP-TO-DATE
 > Task :app:compressDebugAssets UP-TO-DATE
 > Task :app:desugarDebugFileDependencies UP-TO-DATE
-> Task :app:dexBuilderDebug
+> Task :app:dexBuilderDebug UP-TO-DATE
 > Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
 > Task :app:processDebugJavaRes UP-TO-DATE
 > Task :app:mergeDebugJavaResource UP-TO-DATE
 > Task :app:checkDebugDuplicateClasses UP-TO-DATE
 > Task :app:mergeExtDexDebug UP-TO-DATE
 > Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:mergeProjectDexDebug UP-TO-DATE
 > Task :app:mergeDebugJniLibFolders UP-TO-DATE
 > Task :app:mergeDebugNativeLibs UP-TO-DATE
 > Task :app:stripDebugDebugSymbols UP-TO-DATE
@@ -52,96 +55,47 @@
 > Task :app:processReleaseManifest UP-TO-DATE
 > Task :app:processReleaseManifestForPackage UP-TO-DATE
 > Task :app:processReleaseResources UP-TO-DATE
+> Task :app:compileReleaseKotlin UP-TO-DATE
 > Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:compileReleaseJavaWithJavac NO-SOURCE
 > Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:generateReleaseLintVitalReportModel UP-TO-DATE
 > Task :app:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :app:mergeReleaseNativeLibs UP-TO-DATE
+> Task :app:stripReleaseDebugSymbols UP-TO-DATE
+> Task :app:extractReleaseNativeSymbolTables UP-TO-DATE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:checkReleaseDuplicateClasses UP-TO-DATE
 > Task :app:mergeReleaseArtProfile UP-TO-DATE
+> Task :app:expandReleaseArtProfileWildcards UP-TO-DATE
+> Task :app:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :app:processReleaseJavaRes UP-TO-DATE
+> Task :app:mergeReleaseJavaResource UP-TO-DATE
+> Task :app:minifyReleaseWithR8 UP-TO-DATE
+> Task :app:compileReleaseArtProfile UP-TO-DATE
 > Task :app:mergeReleaseShaders UP-TO-DATE
 > Task :app:compileReleaseShaders NO-SOURCE
 > Task :app:generateReleaseAssets UP-TO-DATE
 > Task :app:mergeReleaseAssets UP-TO-DATE
 > Task :app:compressReleaseAssets UP-TO-DATE
 > Task :app:processApplicationManifestReleaseForBundle UP-TO-DATE
-> Task :app:checkReleaseDuplicateClasses
 > Task :app:bundleReleaseResources UP-TO-DATE
-> Task :app:mergeProjectDexDebug
-> Task :app:collectReleaseDependencies
-> Task :app:sdkReleaseDependencyData
+> Task :app:collectReleaseDependencies UP-TO-DATE
+> Task :app:sdkReleaseDependencyData UP-TO-DATE
 > Task :app:writeReleaseAppMetadata UP-TO-DATE
-> Task :app:mergeReleaseNativeLibs
 > Task :app:writeReleaseSigningConfigVersions UP-TO-DATE
-> Task :app:bundleDebugClassesToCompileJar UP-TO-DATE
-> Task :app:preDebugAndroidTestBuild SKIPPED
-> Task :app:generateDebugAndroidTestResValues UP-TO-DATE
-
-> Task :app:stripReleaseDebugSymbols
-Unable to strip the following libraries, packaging them as they are: libpytorch_jni_lite.so.
-
-> Task :app:generateDebugLintReportModel
-> Task :app:extractReleaseNativeSymbolTables
-> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
-> Task :app:bundleDebugClassesToRuntimeJar UP-TO-DATE
-> Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:compileDebugUnitTestKotlin
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect UP-TO-DATE
 > Task :app:assembleDebug
-> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
-> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
-> Task :app:packageDebugUnitTestForUnitTest UP-TO-DATE
-> Task :app:generateDebugUnitTestConfig UP-TO-DATE
-> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
-
-> Task :app:compileReleaseKotlin
-w: file:///home/shuvam/codes/underwater-ai/uwater_app/app/src/main/java/com/underwaterai/enhance/model/EnhanceViewModel.kt:411:13 Variable 'step' is never used
-
-> Task :app:testDebugUnitTest
-> Task :app:compileReleaseJavaWithJavac NO-SOURCE
-> Task :app:generateReleaseLintVitalReportModel
-> Task :app:mergeReleaseGeneratedProguardFiles UP-TO-DATE
-> Task :app:processReleaseJavaRes UP-TO-DATE
-> Task :app:preReleaseUnitTestBuild UP-TO-DATE
-> Task :app:bundleReleaseClassesToCompileJar
-> Task :app:javaPreCompileReleaseUnitTest FROM-CACHE
-> Task :app:bundleReleaseClassesToRuntimeJar
-> Task :app:mergeReleaseJavaResource
-
-> Task :app:compileReleaseUnitTestKotlin
-w: file:///home/shuvam/codes/underwater-ai/uwater_app/app/src/test/java/com/underwaterai/enhance/model/ImageEnhancerLogicTest.kt:163:14 Variable 'tx256' is never used
-w: file:///home/shuvam/codes/underwater-ai/uwater_app/app/src/test/java/com/underwaterai/enhance/model/ImageEnhancerLogicTest.kt:163:21 Variable 'ty256' is never used
-w: file:///home/shuvam/codes/underwater-ai/uwater_app/app/src/test/java/com/underwaterai/enhance/model/ImageEnhancerLogicTest.kt:164:14 Variable 'tx512' is never used
-w: file:///home/shuvam/codes/underwater-ai/uwater_app/app/src/test/java/com/underwaterai/enhance/model/ImageEnhancerLogicTest.kt:164:21 Variable 'ty512' is never used
-
-> Task :app:expandReleaseArtProfileWildcards
-> Task :app:lintAnalyzeDebug
 > Task :app:lintVitalAnalyzeRelease
-> Task :app:packageReleaseUnitTestForUnitTest
-> Task :app:compileReleaseUnitTestJavaWithJavac NO-SOURCE
-> Task :app:generateReleaseUnitTestConfig
-> Task :app:processReleaseUnitTestJavaRes
-> Task :app:testReleaseUnitTest
-> Task :app:test
-> Task :app:lintVitalReportRelease SKIPPED
-> Task :app:lintVitalRelease SKIPPED
-> Task :app:minifyReleaseWithR8
-
-> Task :app:lintReportDebug
-Wrote HTML report to file:///home/shuvam/codes/underwater-ai/uwater_app/app/build/reports/lint-results-debug.html
-
-> Task :app:lintDebug
-> Task :app:lint
-> Task :app:check
-> Task :app:compileReleaseArtProfile
 > Task :app:shrinkReleaseRes
-> Task :app:optimizeReleaseResources UP-TO-DATE
-> Task :app:packageRelease FAILED
+> Task :app:shrinkReleaseRes FAILED
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:packageRelease'.
-> A failure occurred while executing com.android.build.gradle.tasks.PackageAndroidArtifact$IncrementalSplitterRunnable
-   > SigningConfig "release" is missing required property "storeFile".
+Execution failed for task ':app:shrinkReleaseRes'.
+> Failed to store cache entry 2c66b61ddca0befd3e2fbe04977b5566 for task ':app:shrinkReleaseRes': Could not pack tree 'shrunkResources': java.io.IOException: Request to write '1047' bytes exceeds size in header of '17006' bytes for entry 'tree-shrunkResources/resources-release-stripped.ap_'
 
 * Try:
 > Run with --stacktrace option to get the stack trace.
@@ -149,5 +103,5 @@ Execution failed for task ':app:packageRelease'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 14m 2s
-98 actionable tasks: 32 executed, 1 from cache, 65 up-to-date
+BUILD FAILED in 3m 5s
+75 actionable tasks: 4 executed, 71 up-to-date

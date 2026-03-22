@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 import java.util.concurrent.Executors
 import kotlinx.coroutines.asCoroutineDispatcher
 
@@ -37,7 +38,7 @@ data class EnhanceUiState(
     val cpuStats: String? = null
 )
 
-private val aiDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+private val aiDispatcher = kotlinx.coroutines.Dispatchers.Default
 
 class EnhanceViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -280,15 +281,22 @@ class EnhanceViewModel(application: Application) : AndroidViewModel(application)
             _uiState.value = _uiState.value.copy(isProcessing = true, analysisReport = null, annotatedBitmap = null, histogramBitmap = null, cpuStats = null)
             try {
                 
-                // Feature: Actual Image Classification
-                classifier.loadModelIfNeeded()
-                val classifications = classifier.classify(original) ?: emptyList()
+                // Feature: Execute models in parallel for max multi-core utilizing max frequency
+                val classificationsDeferred = async {
+                    classifier.loadModelIfNeeded()
+                    classifier.classify(original) ?: emptyList()
+                }
+                
+                val detectionsDeferred = async {
+                    detector.loadModelIfNeeded()
+                    detector.detect(original, 0.4f)
+                }
+                
+                val classifications = classificationsDeferred.await()
+                val detections = detectionsDeferred.await()
+                
                 val topLabel = classifications.firstOrNull()?.label ?: "Unknown"
                 val allLabels = classifications.joinToString(", ") { "${it.label} (${(it.score * 100).toInt()}%)" }
-                
-                // Feature: Actual Object Detection
-                detector.loadModelIfNeeded()
-                val detections = detector.detect(original, 0.4f)
                 val detectedObjects = detections.joinToString(", ") { "${it.labelName} [${(it.score * 100).toInt()}%]" }
                 
                 // Simple Under-water heuristic check based on common ImageNet/COCO classes

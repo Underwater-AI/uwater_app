@@ -16,8 +16,8 @@ android {
         applicationId = "com.underwaterai.enhance"
         minSdk = 26
         targetSdk = 34
-        versionCode = 7
-        versionName = "1.0.6"
+        versionCode = 8
+        versionName = "1.0.7"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -56,12 +56,12 @@ android {
         release {
             // R8 full-mode: shrink + obfuscate + optimise
             isMinifyEnabled = true
-            isShrinkResources = true
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 

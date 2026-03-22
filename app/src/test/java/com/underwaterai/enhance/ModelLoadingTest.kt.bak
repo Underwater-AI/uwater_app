@@ -1,0 +1,20 @@
+package com.underwaterai.enhance
+
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import com.underwaterai.enhance.model.ObjectDetector
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [33])
+class ModelLoadingTest {
+    @Test
+    fun testObjectDetectorLoads() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val detector = ObjectDetector(context)
+        detector.loadModelIfNeeded()
+    }
+}
