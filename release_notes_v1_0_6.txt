@@ -1,0 +1,16 @@
+## Underwater AI Enhancer - Version 1.0.6 (Stable Build)
+
+### :ocean: Major System Stability & Crash Fixes
+Weve significantly updated how native models initialize runtime environments on complex core architectures (specifically MediaTek and POCO `big.LITTLE` processors).
+* **Resolved Catastrophic Kernel Segfaults (`pthreadpool_parallelize_2d`)**: Disabled manual JVM-to-C++ threading injections (`setNumThreads(1)`) across all Image Classifier, Object Detector, and Enhancer layers. 
+* Native PyTorch environments now seamlessly map against an aggressively choked Coroutine `singleThreadExecutor` dispatcher inside the App layer instead of colliding against Androids internal ART JNI memory limits.
+* Greatly fixes the recurrent `libc.so (__pthread_start)` and random power-draw thermal throttling.
+
+### :test_tube: Model Inference & Classifications Testing
+* Added and ran complete **Android Instrumentation Test Suites** (`AppComprehensiveTest.kt`) confirming all dependencies strictly obey the main application bounding structures without thread leaking.
+* Created a new offline Python simulation test to profile TorchScript Mobile memory bounds vs threading behavior against real test frames representing the target class constraints.
+* Heuristics properly ignore ImageNet object detection mismatches. Our logic (`MarineHeuristicsTest.kt`) safely distinguishes real underwater images from false-positive mappings.
+
+### :arrows_counterclockwise: APK & Compilation Updates
+* Full `R8` shrinking and ProGuard optimization on `app-release.apk`.
+* Added `app-debug.apk` directly inline for extended Android Studio remote profiling or developer telemetry traces.
